@@ -1,43 +1,67 @@
-// Arrays of words for different categories
 const words = {
     fruits: ["apple", "banana", "grape", "orange", "pear", "peach", "mango"],
     animals: ["cat", "dog", "elephant", "giraffe", "lion", "tiger", "zebra"]
 };
 
-let currentWord = "";  // Store the current word to check against user input
-let score = 0;         // Initialize score to 0
-let timeLeft = 10;     // Set the timer for 10 seconds
-let timer;             // Variable to hold the timer interval
-let currentCategory = 'fruits'; // Default category
+let currentWord = "";
+let score = 0;
+let timeLeft = 10;
+let timer;
+let currentCategory = 'fruits';
+let currentMode = 'jumble'; // Default game mode
 
-// Function to shuffle letters in the word
 function shuffleWord(word) {
     let shuffled = word.split('').sort(() => 0.5 - Math.random()).join('');
     return shuffled;
 }
 
+// Function to set the game mode
+function setMode(mode) {
+    currentMode = mode;
+    score = 0;
+    document.getElementById("score").innerText = `Score: ${score}`;
+    
+    // Display different instructions based on the mode
+    const instructions = document.getElementById("instructions");
+    if (mode === 'jumble') {
+        instructions.innerText = "Unscramble the jumbled word!";
+    } else if (mode === 'swap') {
+        instructions.innerText = "Reorder the scrambled letters to form the correct word!";
+    }
+
+    setCategory(currentCategory); // Restart the game with the selected mode
+}
+
 // Function to set the word category
 function setCategory(category) {
-    currentCategory = category; // Set the current category
-    score = 0; // Reset score for the new category
-    document.getElementById("score").innerText = `Score: ${score}`; // Update score display
-    newRound(); // Start a new round with the selected category
+    currentCategory = category;
+    score = 0;
+    document.getElementById("score").innerText = `Score: ${score}`;
+
+    setTimeout(() => {
+        newRound();
+    }, 3000);
 }
 
-// Function to start a new round with a new jumbled word
 function newRound() {
-    const wordsList = words[currentCategory]; // Get the words for the current category
+    const wordsList = words[currentCategory];
     currentWord = wordsList[Math.floor(Math.random() * wordsList.length)];
-    document.getElementById("jumbled-word").innerText = shuffleWord(currentWord);
+    
+    // Display jumbled or scrambled word based on the game mode
+    if (currentMode === 'jumble') {
+        document.getElementById("jumbled-word").innerText = shuffleWord(currentWord);
+    } else if (currentMode === 'swap') {
+        document.getElementById("jumbled-word").innerText = currentWord.split('').sort(() => 0.5 - Math.random()).join('');
+    }
+    
     document.getElementById("user-input").value = "";
     document.getElementById("feedback").innerText = "";
-    clearInterval(timer); // Clear any existing timer
-    startTimer(); // Start the timer for the new round
+    clearInterval(timer);
+    startTimer();
 }
 
-// Function to start the countdown timer
 function startTimer() {
-    timeLeft = 10; // Reset time left to 10 seconds
+    timeLeft = 10;
     document.getElementById("time-left").innerText = `Time left: ${timeLeft}s`;
     timer = setInterval(() => {
         timeLeft--;
@@ -45,42 +69,47 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timer);
             alert("Time's up! Final Score: " + score);
-            score = 0; // Reset score after time runs out
+            score = 0;
             document.getElementById("score").innerText = `Score: ${score}`;
-            newRound(); // Start a new round
+            newRound();
         }
-    }, 1000); // Update every second
+    }, 1000);
 }
 
-// Function to check the user's guess
 function checkAnswer() {
-    const userGuess = document.getElementById("user-input").value;
-    if (userGuess.toLowerCase() === currentWord) {  // Correct guess
-        score++;
-        document.getElementById("feedback").innerText = "Correct!";
-        document.getElementById("user-input").value = ""; // Clear input for next guess
-        setTimeout(newRound, 1000); // Move to the next round after 1 second
-    } else {  // Incorrect guess
+    const userGuess = document.getElementById("user-input").value.toLowerCase();
+    
+    if (currentMode === 'jumble' && userGuess === currentWord) {
+        handleCorrectAnswer();
+    } else if (currentMode === 'swap' && userGuess === currentWord) {
+        handleCorrectAnswer();
+    } else {
         document.getElementById("feedback").innerText = "Try Again!";
     }
+}
+
+function handleCorrectAnswer() {
+    score++;
+    document.getElementById("feedback").innerText = "Correct!";
+    document.getElementById("user-input").value = "";
     document.getElementById("score").innerText = `Score: ${score}`;
+    setTimeout(newRound, 1000);
 }
 
-// Function to stop the game
 function stopGame() {
-    clearInterval(timer); // Clear the timer
-    alert("Game stopped! Your final score is: " + score); // Alert final score
-    score = 0; // Reset score
-    document.getElementById("score").innerText = `Score: ${score}`; // Update score display
-    document.getElementById("feedback").innerText = ""; // Clear feedback
+    clearInterval(timer);
+    alert("Game stopped! Your final score is: " + score);
+    score = 0;
+    document.getElementById("score").innerText = `Score: ${score}`;
+    document.getElementById("feedback").innerText = "";
 }
 
-// Add event listener to the input field for 'Enter' key
 document.getElementById("user-input").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
-        checkAnswer(); // Call the checkAnswer function
+        checkAnswer();
     }
 });
 
-// Start the first round when the page loads
-window.onload = newRound;
+window.onload = function() {
+    document.getElementById("time-left").innerText = "Time left: 10s";
+};

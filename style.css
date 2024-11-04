@@ -84,3 +84,14 @@ button:last-child:hover {
     margin-top: 20px;
     font-size: 18px; /* Slightly larger score font */
 }
+
+#mode-buttons {
+    margin: 15px 0;
+}
+
+#instructions {
+    font-size: 1em;
+    color: #333;
+    margin: 10px 0;
+    font-weight: bold;
+}

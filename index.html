@@ -3,25 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Jumble Race</title>
+    <title>Word Games</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        <h1>Word Jumble Race</h1>
+        <h1>Word Games</h1>
+        
+        <!-- Game Mode Selection -->
+        <div id="mode-buttons">
+            <button onclick="setMode('jumble')">Word Jumble Race</button>
+            <button onclick="setMode('swap')">Sequence Swap</button>
+        </div>
+        
+        <!-- Category Buttons -->
         <div id="category-buttons">
             <button onclick="setCategory('fruits')">Fruits</button>
             <button onclick="setCategory('animals')">Animals</button>
         </div>
+        
+        <!-- Game Info and Instructions -->
+        <div id="instructions"></div>
         <div id="game-info">
             <p id="jumbled-word">Jumbled Word Here</p>
             <p id="time-left">Time left: 10s</p>
             <p id="feedback"></p>
         </div>
+        
         <input type="text" id="user-input" placeholder="Your Guess">
         <div class="button-container">
             <button onclick="checkAnswer()">Submit</button>
-            <button onclick="stopGame()">Stop</button> <!-- Stop button -->
+            <button onclick="stopGame()">Stop</button>
         </div>
         <p id="score">Score: 0</p>
     </div>
