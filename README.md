@@ -1,7 +1,3 @@
-Here’s a sample `README.md` file for your "Word Jumble Race" project, with sections covering the game description, features, setup instructions, and how to play. This should give potential users and contributors a good understanding of what the project is about and how to get started with it.
-
----
-
 # Word Jumble Race
 
 Welcome to **Word Jumble Race**, a fun and interactive word puzzle game! This game challenges players to unscramble jumbled words or reorder letters in a scrambled sequence, testing their vocabulary and quick-thinking skills. Choose from two modes: **Word Jumble Race** or **Sequence Swap**, each offering a unique and exciting way to play.
